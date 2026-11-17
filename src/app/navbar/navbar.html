@@ -22,10 +22,13 @@
       <span class="cartTxt">Cart</span>
     </a>
     @if (isLoggedIn || authSession.isAuthenticated()) {
-      <button class="account" type="button">
-        <span class="account-icon" aria-hidden="true">{{ signedInInitial }}</span>
-        <span>{{ signedInLabel }}</span>
-      </button>
+      <div class="signed-in-actions">
+        <button class="account" type="button">
+          <span class="account-icon" aria-hidden="true">{{ signedInInitial }}</span>
+          <span>{{ signedInLabel }}</span>
+        </button>
+        <button class="logout-button" type="button" (click)="logout()">Log Out</button>
+      </div>
     } @else {
       <div class="auth-links">
         <a routerLink="/log-in">Log In</a>

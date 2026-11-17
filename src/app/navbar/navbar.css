@@ -199,6 +199,36 @@
 .account {
   font-weight: 700;
   gap: 8px;
+  max-width: 220px;
+  min-width: 0;
+}
+
+.account span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signed-in-actions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.logout-button {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: 600 14px var(--font-body);
+  padding: 9px 13px;
+}
+
+.logout-button:hover {
+  opacity: 0.82;
 }
 
 .account-icon {
@@ -277,6 +307,7 @@
 
   .actions {
     flex: 1 0 100%;
+    flex-wrap: wrap;
     justify-content: space-between;
   }
 }
@@ -323,6 +354,19 @@
   }
 
   .auth-links a {
+    font-size: 12px;
+    padding: 8px 9px;
+  }
+
+  .signed-in-actions {
+    gap: 6px;
+  }
+
+  .account {
+    max-width: 160px;
+  }
+
+  .logout-button {
     font-size: 12px;
     padding: 8px 9px;
   }

@@ -20,4 +20,9 @@ export class Navbar {
   get signedInInitial(): string {
     return this.signedInLabel.charAt(0).toUpperCase();
   }
+
+  logout(): void {
+    this.authSession.clear();
+    this.isLoggedIn = false;
+  }
 }
