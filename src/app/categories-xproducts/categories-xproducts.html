@@ -1,0 +1,7 @@
+<section class="main">
+    <app-navbar></app-navbar>
+    <div>
+        <app-filter (filtersChanged)="updateFilters($event)"></app-filter>
+        <app-categories-products [filters]="filters()"></app-categories-products>
+    </div>
+</section>

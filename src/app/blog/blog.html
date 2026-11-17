@@ -3,14 +3,20 @@
 
   <div class="blog-grid">
     @for (article of articles; track article.title) {
-      <article class="blog-card">
+      <a
+        class="blog-card"
+        [href]="article.url"
+        [attr.aria-label]="article.title"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img class="blog-background" [src]="article.image" alt="" aria-hidden="true">
         <h3>{{ article.title }}</h3>
         <div class="watch-cta" aria-hidden="true">
           <span>Watch</span>
-          <i class="fa-solid fa-arrow-right"></i>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </div>
-      </article>
+      </a>
     }
   </div>
 </section>

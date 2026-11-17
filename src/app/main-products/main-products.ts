@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiLinks, Product } from '../api-links';
 
 type ProductSection = 'recommendations' | 'laptops' | 'phones';
@@ -11,6 +12,7 @@ type ProductSection = 'recommendations' | 'laptops' | 'phones';
 })
 export class MainProducts implements OnInit {
   private readonly apiLinks = inject(ApiLinks);
+  private readonly router = inject(Router);
 
   section = input<ProductSection>('recommendations');
   private readonly availableProducts = signal<Product[]>([]);
@@ -55,6 +57,10 @@ export class MainProducts implements OnInit {
         this.isLoading.set(false);
       },
     });
+  }
+
+  openProduct(product: Product): void {
+    void this.router.navigate(['/product', product._id]);
   }
 
   private shuffle(products: Product[]): Product[] {

@@ -1,1 +1,112 @@
-<p>filter works!</p>
+<aside class="filter-panel" aria-label="Product filters">
+  <header class="filter-header">
+    <h2><i class="fa-solid fa-filter" aria-hidden="true"></i> Filters</h2>
+    <button class="reset-button" type="button" (click)="resetFilters()">Reset</button>
+  </header>
+
+  @if (isLoading()) {
+    <p class="filter-status" role="status">Loading filters...</p>
+  } @else if (errorMessage()) {
+    <p class="filter-status filter-error" role="alert">{{ errorMessage() }}</p>
+  } @else {
+    <section class="filter-group price-group" aria-labelledby="price-heading">
+      <div class="group-heading">
+        <h3 id="price-heading">PRICE RANGE</h3>
+        @if (currencies().length > 1) {
+          <label class="currency-select">
+            <span class="visually-hidden">Price currency</span>
+            <select [value]="selectedCurrency()" (change)="changeCurrency($event)">
+              @for (currency of currencies(); track currency) {
+                <option [value]="currency">{{ currency }}</option>
+              }
+            </select>
+          </label>
+        }
+      </div>
+      <div class="price-values">
+        <span>Min. {{ formatPrice(minPrice()) }} {{ selectedCurrency() }}</span>
+        <span>Max. {{ formatPrice(maxPrice()) }} {{ selectedCurrency() }}</span>
+      </div>
+      <div class="range-slider">
+        <input
+          type="range"
+          aria-label="Minimum price"
+          [min]="priceBounds().min"
+          [max]="priceBounds().max"
+          step="any"
+          [value]="minPrice()"
+          (input)="changeMinimumPrice($event)"
+        >
+        <input
+          type="range"
+          aria-label="Maximum price"
+          [min]="priceBounds().min"
+          [max]="priceBounds().max"
+          step="any"
+          [value]="maxPrice()"
+          (input)="changeMaximumPrice($event)"
+        >
+      </div>
+    </section>
+
+    <section class="filter-group" aria-labelledby="brands-heading">
+      <h3 id="brands-heading">BRANDS</h3>
+      <div class="options-list">
+        @for (brand of brands(); track brand) {
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              [checked]="selectedBrands().includes(brand)"
+              (change)="toggleBrand(brand, $event)"
+            >
+            <span>{{ brand }}</span>
+          </label>
+        }
+      </div>
+    </section>
+
+    <section class="filter-group" aria-labelledby="categories-heading">
+      <h3 id="categories-heading">CATEGORIES</h3>
+      <div class="options-list">
+        @for (category of categories(); track category.id) {
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              [checked]="selectedCategories().includes(category.id)"
+              (change)="toggleCategory(category.id, $event)"
+            >
+            <span>{{ category.name }}</span>
+          </label>
+        }
+      </div>
+    </section>
+
+    <section class="filter-group rating-group" aria-labelledby="rating-heading">
+      <h3 id="rating-heading">MINIMUM RATING</h3>
+      @for (rating of ratingOptions; track rating) {
+        <button
+          class="rating-option"
+          [class.selected]="minimumRating() === rating"
+          [attr.aria-pressed]="minimumRating() === rating"
+          type="button"
+          (click)="selectRating(rating)"
+        >
+          <span class="rating-stars" [attr.aria-label]="rating + ' stars and up'">
+            @for (star of stars; track star) {
+              <i class="fa-solid fa-star" [class.dimmed]="star > rating" aria-hidden="true"></i>
+            }
+          </span>
+          <span>{{ rating }} &amp; Up</span>
+        </button>
+      }
+    </section>
+
+    <section class="filter-group availability-group" aria-labelledby="availability-heading">
+      <h3 id="availability-heading">AVAILABILITY</h3>
+      <label class="filter-option">
+        <input type="checkbox" [checked]="inStockOnly()" (change)="toggleInStock($event)">
+        <span>In Stock</span>
+      </label>
+    </section>
+  }
+</aside>

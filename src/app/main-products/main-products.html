@@ -10,7 +10,14 @@
   } @else {
     <div class="product-carousel" role="region" aria-label="Products, scroll horizontally" tabindex="0">
       @for (product of products(); track product._id) {
-        <article class="product-card">
+        <article
+          class="product-card"
+          role="link"
+          tabindex="0"
+          [attr.aria-label]="'View details for ' + product.title"
+          (click)="openProduct(product)"
+          (keydown.enter)="openProduct(product)"
+        >
           <div class="product-image">
             <img [src]="product.thumbnail" [alt]="product.title" loading="lazy">
           </div>
@@ -20,7 +27,7 @@
             <p class="product-price">
               {{ product.price.current }} {{ product.price.currency }}
             </p>
-            <div class="product-actions">
+            <div class="product-actions" aria-hidden="true">
               <button class="compare-button" type="button" aria-label="Compare product" disabled>
                 <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
               </button>

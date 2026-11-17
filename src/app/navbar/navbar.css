@@ -32,6 +32,7 @@
   justify-content: flex-start;
   min-width: 190px;
   text-align: left;
+  text-decoration: none;
 }
 
 .brand img {
@@ -60,6 +61,12 @@
   font-size: 16px;
   cursor: pointer;
 }
+
+.categories {
+  color: inherit;
+  text-decoration: none;
+}
+
 .categories:hover,
 .search:hover,
 .help:hover,

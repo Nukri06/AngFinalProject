@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 interface CarouselSlide {
   title: string;
@@ -9,7 +10,7 @@ interface CarouselSlide {
 }
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-carousel',
   styleUrl: './carousel.css',
   templateUrl: './carousel.html',

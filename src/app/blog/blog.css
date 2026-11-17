@@ -24,10 +24,18 @@
 .blog-card {
   aspect-ratio: 1.8 / 1;
   border-radius: 26px;
+  color: inherit;
+  display: block;
   isolation: isolate;
   min-height: 250px;
   overflow: hidden;
   position: relative;
+  text-decoration: none;
+}
+
+.blog-card:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
 }
 
 .blog-background {

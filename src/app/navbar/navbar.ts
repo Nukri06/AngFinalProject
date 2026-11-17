@@ -10,8 +10,4 @@ import { RouterLink } from '@angular/router';
 export class Navbar {
   @Input() isLoggedIn = false;
   @Input() userName = 'Peter, P';
-
-  refreshPage(): void {
-    window.location.reload();
-  }
 }

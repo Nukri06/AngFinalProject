@@ -1,1 +1,212 @@
-<p>product-desc works!</p>
+<app-navbar></app-navbar>
+
+<main class="detail-page">
+  <div class="detail-container">
+    <a class="back-link" routerLink="/categoriesXproducts">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      Back to products
+    </a>
+
+    @if (isLoading()) {
+      <p class="detail-status" role="status">Loading product details...</p>
+    } @else if (errorMessage()) {
+      <p class="detail-status detail-error" role="alert">{{ errorMessage() }}</p>
+    } @else if (product(); as item) {
+      <article class="detail-card">
+        <div class="detail-gallery">
+          <div class="detail-image">
+            <div class="main-product-image">
+              @if (productImages().length > 0) {
+                <img
+                  [src]="productImages()[activeImageIndex()]"
+                  [alt]="item.title + ' image ' + (activeImageIndex() + 1)"
+                >
+              } @else {
+                <p>Image unavailable</p>
+              }
+            </div>
+            @if (productImages().length > 1) {
+              <div class="image-thumbnails" role="group" aria-label="Choose a product image">
+                @for (image of productImages(); track image; let index = $index) {
+                  <button
+                    type="button"
+                    class="image-thumbnail"
+                    [class.selected]="activeImageIndex() === index"
+                    [attr.aria-label]="'Show product image ' + (index + 1)"
+                    [attr.aria-pressed]="activeImageIndex() === index"
+                    (click)="selectImage(index)"
+                  >
+                    <img [src]="image" alt="" loading="lazy">
+                  </button>
+                }
+              </div>
+            }
+          </div>
+
+          <dl class="detail-facts">
+            <div>
+              <dt>Availability</dt>
+              <dd [class.out-of-stock]="item.stock <= 0">
+                {{ item.stock > 0 ? 'In stock' : 'Out of stock' }}
+              </dd>
+            </div>
+            <div>
+              <dt>Stock</dt>
+              <dd>{{ item.stock }}</dd>
+            </div>
+            <div>
+              <dt>Warranty</dt>
+              <dd>{{ item.warranty }}</dd>
+            </div>
+            <div>
+              <dt>Added</dt>
+              <dd>{{ item.issueDate }}</dd>
+            </div>
+          </dl>
+
+          <section class="rating-form" aria-label="Rate this product">
+            <h2>Rate this product</h2>
+            <div class="rating-options" role="group" aria-label="Choose a rating">
+              @for (rating of ratingOptions; track rating) {
+                <button
+                  type="button"
+                  [class.selected]="selectedRating() >= rating"
+                  [attr.aria-label]="rating + ' stars'"
+                  [attr.aria-pressed]="selectedRating() === rating"
+                  [disabled]="isSubmittingRating()"
+                  (click)="selectRating(rating)"
+                >
+                  <i class="fa-solid fa-star" aria-hidden="true"></i>
+                  {{ rating }}
+                </button>
+              }
+            </div>
+            <button
+              class="submit-rating-button"
+              type="button"
+              [disabled]="selectedRating() === 0 || isSubmittingRating()"
+              (click)="submitRating(item)"
+            >
+              {{ isSubmittingRating() ? 'Submitting...' : 'Submit rating' }}
+            </button>
+            @if (ratingMessage()) {
+              <p class="action-success" role="status">{{ ratingMessage() }}</p>
+            }
+            @if (ratingErrorMessage()) {
+              <p class="action-error" role="alert">{{ ratingErrorMessage() }}</p>
+            }
+            @if (ratingRefreshMessage()) {
+              <p class="action-error" role="status">{{ ratingRefreshMessage() }}</p>
+            }
+          </section>
+        </div>
+
+        <div class="detail-content">
+          <p class="detail-category">{{ item.category.name }}</p>
+          <h1>{{ item.title }}</h1>
+          <p class="detail-brand">{{ item.brand }}</p>
+          <p class="detail-rating">
+            <i class="fa-solid fa-star" aria-hidden="true"></i>
+            {{ formatRating(item.rating) }} / 5
+            <span>({{ item.ratings.length }} reviews)</span>
+          </p>
+          <p class="detail-description">{{ item.description }}</p>
+
+          <section class="purchase-panel" aria-label="Purchase options">
+            <div class="purchase-summary">
+              @if (item.price.discountPercentage > 0) {
+                <p class="discount-label">-{{ item.price.discountPercentage }}%</p>
+              }
+              <p class="detail-price">
+                {{ formatPrice(item.price.current) }} {{ item.price.currency }}
+              </p>
+              @if (item.price.beforeDiscount > item.price.current) {
+                <p class="list-price">
+                  List Price:
+                  <s>{{ formatPrice(item.price.beforeDiscount) }} {{ item.price.currency }}</s>
+                </p>
+              }
+              <p class="stock-status" [class.out-of-stock]="item.stock <= 0">
+                {{ item.stock > 0 ? 'In stock' : 'Out of stock' }}
+              </p>
+            </div>
+
+            <div class="purchase-actions">
+              <label class="quantity-control">
+                Quantity
+                <select
+                  [value]="quantity()"
+                  [disabled]="item.stock <= 0"
+                  (change)="changeQuantity($event, item.stock)"
+                >
+                  @for (option of quantityOptions; track option) {
+                    @if (option <= item.stock) {
+                      <option [value]="option">{{ option }}</option>
+                    }
+                  }
+                </select>
+              </label>
+              <button
+                class="add-cart-button"
+                type="button"
+                [disabled]="item.stock <= 0 || isAddingToCart()"
+                (click)="addToCart(item)"
+              >
+                {{ isAddingToCart() ? 'Adding...' : 'Add to Cart' }}
+              </button>
+              <button
+                class="buy-now-button"
+                type="button"
+                disabled
+                aria-describedby="buy-now-note"
+              >
+                Buy Now
+              </button>
+              <p id="buy-now-note" class="disabled-action-note">Checkout is not available yet.</p>
+            </div>
+
+            @if (cartMessage()) {
+              <p class="action-success" role="status">{{ cartMessage() }}</p>
+            }
+            @if (cartErrorMessage()) {
+              <p class="action-error" role="alert">{{ cartErrorMessage() }}</p>
+            }
+          </section>
+        </div>
+      </article>
+
+      <section class="similar-section" aria-labelledby="similar-heading">
+        <h2 id="similar-heading">Similar products</h2>
+        @if (isSimilarLoading()) {
+          <p class="detail-status" role="status">Loading similar products...</p>
+        } @else if (similarErrorMessage()) {
+          <p class="detail-status detail-error" role="alert">{{ similarErrorMessage() }}</p>
+        } @else if (similarProducts().length === 0) {
+          <p class="detail-status">No similar products are available right now.</p>
+        } @else {
+          <div class="similar-grid">
+            @for (similar of similarProducts(); track similar._id) {
+              <a class="similar-card" [routerLink]="['/product', similar._id]">
+                <div class="similar-image">
+                  <img
+                    [src]="similar.images[0] || similar.thumbnail"
+                    [alt]="similar.title"
+                    loading="lazy"
+                    (error)="onSimilarImageError($event, similar)"
+                  >
+                </div>
+                <div class="similar-info">
+                  <h3>{{ similar.title }}</h3>
+                  <p>{{ formatPrice(similar.price.current) }} {{ similar.price.currency }}</p>
+                </div>
+              </a>
+            }
+          </div>
+        }
+      </section>
+    }
+  </div>
+
+  <app-blog></app-blog>
+  <app-footer></app-footer>
+</main>

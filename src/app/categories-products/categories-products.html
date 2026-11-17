@@ -1,0 +1,120 @@
+<section class="products-panel" aria-label="Product results">
+  <header class="products-header">
+    <div class="heading-copy">
+      <h1>{{ categoryTitle() }}</h1>
+      <p>
+        Showing <strong>{{ pageProducts().length }}</strong>
+        @if (filteredProducts().length !== pageProducts().length) {
+          of {{ filteredProducts().length }}
+        }
+        Products
+      </p>
+    </div>
+
+    <label class="sort-control">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      <span>Sort by:</span>
+      <select [value]="sortOrder()" (change)="changeSort($event)">
+        <option value="popular">Most Popular</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="newest">Newest</option>
+      </select>
+      <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+    </label>
+  </header>
+
+  @if (isLoading()) {
+    <p class="products-status" role="status">Loading products...</p>
+  } @else if (errorMessage()) {
+    <p class="products-status products-error" role="alert">{{ errorMessage() }}</p>
+  } @else if (filteredProducts().length === 0) {
+    <p class="products-status">No products match the selected filters.</p>
+  } @else {
+    <div class="products-grid">
+      @for (product of pageProducts(); track product._id) {
+        <article
+          class="product-card"
+          role="link"
+          tabindex="0"
+          [attr.aria-label]="'View details for ' + product.title"
+          (click)="openProduct(product)"
+          (keydown.enter)="openProduct(product)"
+        >
+          <div class="product-image">
+            <img [src]="product.thumbnail" [alt]="product.title" loading="lazy">
+          </div>
+          <div class="product-info">
+            <h2 [title]="product.title">{{ product.title }}</h2>
+            <p class="product-price">
+              {{ formatPrice(product.price.current) }} {{ product.price.currency }}
+            </p>
+            <p class="product-brand">{{ product.brand }}</p>
+            <div class="product-actions">
+              <button
+                class="compare-button"
+                type="button"
+                aria-label="Compare product"
+                aria-disabled="true"
+                tabindex="-1"
+              >
+                <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+              </button>
+              <button class="cart-button" type="button" aria-disabled="true" tabindex="-1">
+                <span>Add to the cart</span>
+                <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <nav class="pagination" aria-label="Product pages">
+      <button
+        class="page-arrow"
+        type="button"
+        aria-label="Previous page"
+        [disabled]="currentPage() === 1"
+        (click)="goToPage(currentPage() - 1)"
+      >
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      </button>
+
+      <div class="page-numbers">
+        @if (pageNumbers()[0] > 1) {
+          <button type="button" (click)="goToPage(1)">1</button>
+          @if (pageNumbers()[0] > 2) {
+            <span aria-hidden="true">...</span>
+          }
+        }
+        @for (page of pageNumbers(); track page) {
+          <button
+            type="button"
+            [class.active]="currentPage() === page"
+            [attr.aria-current]="currentPage() === page ? 'page' : null"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+        @if (pageNumbers()[pageNumbers().length - 1] < pageCount()) {
+          @if (pageNumbers()[pageNumbers().length - 1] < pageCount() - 1) {
+            <span aria-hidden="true">...</span>
+          }
+          <button type="button" (click)="goToPage(pageCount())">{{ pageCount() }}</button>
+        }
+      </div>
+
+      <button
+        class="page-arrow"
+        type="button"
+        aria-label="Next page"
+        [disabled]="currentPage() === pageCount()"
+        (click)="goToPage(currentPage() + 1)"
+      >
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </nav>
+  }
+</section>

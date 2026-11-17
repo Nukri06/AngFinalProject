@@ -1,11 +1,11 @@
 <header class="navbar">
-  <button class="brand" type="button" aria-label="Refresh page" (click)="refreshPage()">
+  <a class="brand" routerLink="/" aria-label="GameStation home">
     <img src="/assets/GStation Logo.png" alt="">
     <span>GameStation</span>
-  </button>
+  </a>
 
   <nav class="primary-nav" aria-label="Main navigation">
-    <span class="categories">Categories</span>
+    <a class="categories" routerLink="/categoriesXproducts">Categories</a>
     <label class="search">
       <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
       <input type="search" placeholder="search the product here" aria-label="Search products">

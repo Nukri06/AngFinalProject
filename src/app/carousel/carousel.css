@@ -66,10 +66,17 @@
   margin-top: 38px;
   padding: 13px 15px;
   cursor: pointer;
+  text-decoration: none;
 }
-.shop-button:hover{
+
+.shop-button:hover {
   background-color: #a21fb3;
   transition: 0.2s;
+}
+
+.shop-button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
 }
 
 .carousel-controls {

@@ -30,6 +30,21 @@ export interface Product {
     category: ProductCategory;
 }
 
+export interface ProductRating {
+    userId: string;
+    value: number;
+    createdAt: string;
+}
+
+export interface ProductRatingRequest {
+    productId: string;
+    rate: number;
+}
+
+export interface ProductDetails extends Product {
+    ratings: ProductRating[];
+}
+
 export interface ProductsResponse {
     total: number;
     limit: number;
@@ -50,6 +65,25 @@ export class ApiLinks {
             .set('page_index', pageIndex)
             .set('page_size', pageSize);
         return this.api.get<ProductsResponse>('https://api.everrest.educata.dev/shop/products/all', { params })
+    }
+
+    productsGetById(id: string) {
+        return this.api.get<ProductDetails>(`https://api.everrest.educata.dev/shop/products/id/${encodeURIComponent(id)}`);
+    }
+
+    productsRateProduct(productId: string, rate: number) {
+        const body: ProductRatingRequest = { productId, rate };
+        return this.api.post<Product>(
+            'https://api.everrest.educata.dev/shop/products/rate',
+            body,
+        );
+    }
+
+    productsAddToCart(id: string, quantity: number) {
+        return this.api.post<Record<string, unknown>>(
+            'https://api.everrest.educata.dev/shop/cart/product',
+            { id, quantity },
+        );
     }
 
     productsGetAllPages(pageSize = 8): Observable<Product[]> {
@@ -81,8 +115,27 @@ export class ApiLinks {
         return this.api.get<ProductCategory[]>('https://api.everrest.educata.dev/shop/products/categories')
     }
 
+    productsGetCategoryById(categoryId: string, pageIndex = 1, pageSize = 8) {
+        const params = new HttpParams()
+            .set('page_index', pageIndex)
+            .set('page_size', pageSize);
+        return this.api.get<ProductsResponse>(
+            `https://api.everrest.educata.dev/shop/products/category/${encodeURIComponent(categoryId)}`,
+            { params },
+        );
+    }
+
     productsGetBrands(){
         return this.api.get<ProductBrand[]>('https://api.everrest.educata.dev/shop/products/brands')
+    }
+    productsGetBrandByName(brandName: string, pageIndex = 1, pageSize = 8) {
+        const params = new HttpParams()
+            .set('page_index', pageIndex)
+            .set('page_size', pageSize);
+        return this.api.get<ProductsResponse>(
+            `https://api.everrest.educata.dev/shop/products/brand/${encodeURIComponent(brandName)}`,
+            { params },
+        );
     }
 }
 

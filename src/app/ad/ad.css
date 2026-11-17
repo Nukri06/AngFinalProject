@@ -59,6 +59,7 @@
   background: linear-gradient(100deg,#5068d8 , #060d2b);
   border-radius: 12px;
   bottom: 28px;
+  color: #fff;
   display: flex;
   font-size: 22px;
   font-weight: 700;
@@ -68,7 +69,7 @@
   min-height: 38px;
   position: absolute;
   right: 28px;
-  
+  text-decoration: none;
   z-index: 2;
 }
 
@@ -76,6 +77,12 @@
   background: linear-gradient(100deg, #000000, #5068d8);
   transition:  0.5s ease;
 }
+
+.ad-cta:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
 .ad-cta i {
   font-size: 18px;
 }
