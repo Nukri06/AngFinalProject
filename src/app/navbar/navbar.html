@@ -17,15 +17,14 @@
       <span class="help-avatar" aria-hidden="true"><i class="fa-solid fa-headset"></i></span>
       <span>Help</span>
     </button>
-    <button class="icon-button cart" type="button" aria-label="Cart">
+    <a class="icon-button cart" routerLink="/cart" aria-label="Cart">
       <i class="fa-solid fa-cart-shopping"></i>
       <span class="cartTxt">Cart</span>
-      <span class="cart-count">0</span>
-    </button>
-    @if (isLoggedIn) {
+    </a>
+    @if (isLoggedIn || authSession.isAuthenticated()) {
       <button class="account" type="button">
-        <span class="account-icon" aria-hidden="true">P</span>
-        <span>{{ userName }}</span>
+        <span class="account-icon" aria-hidden="true">{{ signedInInitial }}</span>
+        <span>{{ signedInLabel }}</span>
       </button>
     } @else {
       <div class="auth-links">

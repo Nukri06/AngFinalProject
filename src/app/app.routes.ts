@@ -4,11 +4,13 @@ import { Register } from './register/register';
 import { Main } from './main/main';
 import { CategoriesXproducts } from './categories-xproducts/categories-xproducts';
 import { ProductDesc } from './product-desc/product-desc';
+import { Cart } from './cart/cart';
 
 export const routes: Routes = [
   { path: '', component: Main, pathMatch: 'full' },
   { path: 'categoriesXproducts', component: CategoriesXproducts },
   { path: 'product/:id', component: ProductDesc },
+  { path: 'cart', component: Cart },
   { path: 'log-in', component: LogIn },
   { path: 'register', component: Register },
 ];

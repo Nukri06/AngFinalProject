@@ -2,7 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { ApiLinks, Product, ProductDetails } from '../api-links';
+import {
+  ApiLinks,
+  isEmailVerificationRequiredError,
+  Product,
+  ProductDetails,
+} from '../api-links';
+import { AuthSession } from '../auth-session';
 import { Navbar } from '../navbar/navbar';
 import { Blog } from '../blog/blog';
 import { Footer } from '../footer/footer';
@@ -16,6 +22,7 @@ import { Footer } from '../footer/footer';
 export class ProductDesc implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly apiLinks = inject(ApiLinks);
+  readonly authSession = inject(AuthSession);
 
   readonly product = signal<ProductDetails | null>(null);
   readonly productImages = computed(() => {
@@ -39,6 +46,11 @@ export class ProductDesc implements OnInit {
   readonly ratingMessage = signal('');
   readonly ratingErrorMessage = signal('');
   readonly ratingRefreshMessage = signal('');
+  readonly requiresEmailVerification = signal(false);
+  readonly isSendingVerificationEmail = signal(false);
+  readonly isRefreshingVerifiedSession = signal(false);
+  readonly verificationMessage = signal('');
+  readonly verificationErrorMessage = signal('');
   readonly ratingOptions = [1, 2, 3, 4, 5];
   readonly quantityOptions = [1, 2, 3, 4, 5];
 
@@ -64,6 +76,9 @@ export class ProductDesc implements OnInit {
           this.ratingMessage.set('');
           this.ratingErrorMessage.set('');
           this.ratingRefreshMessage.set('');
+          this.requiresEmailVerification.set(false);
+          this.verificationMessage.set('');
+          this.verificationErrorMessage.set('');
           return this.apiLinks.productsGetById(id);
         }),
       )
@@ -125,17 +140,27 @@ export class ProductDesc implements OnInit {
     this.isAddingToCart.set(true);
     this.cartMessage.set('');
     this.cartErrorMessage.set('');
-    this.apiLinks.productsAddToCart(item._id, this.quantity()).subscribe({
+    this.apiLinks.cartAddProduct(item._id, this.quantity()).subscribe({
       next: () => {
         if (this.product()?._id !== item._id) return;
 
         this.cartMessage.set('Product added to cart.');
         this.isAddingToCart.set(false);
       },
-      error: () => {
+      error: (error: unknown) => {
         if (this.product()?._id !== item._id) return;
 
-        this.cartErrorMessage.set('Could not add this product to the cart. Please try again.');
+        if (isEmailVerificationRequiredError(error)) {
+          this.requiresEmailVerification.set(true);
+          this.isAddingToCart.set(false);
+          return;
+        }
+
+        this.cartErrorMessage.set(
+          error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)
+            ? 'Sign in to add products to your cart.'
+            : 'Could not add this product to the cart. Please try again.',
+        );
         this.isAddingToCart.set(false);
       },
     });
@@ -185,12 +210,87 @@ export class ProductDesc implements OnInit {
       error: (error: unknown) => {
         if (this.product()?._id !== item._id) return;
 
+        if (isEmailVerificationRequiredError(error)) {
+          this.requiresEmailVerification.set(true);
+          this.isSubmittingRating.set(false);
+          return;
+        }
+
         this.ratingErrorMessage.set(
           error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)
             ? 'Sign in to submit a rating.'
             : 'Could not submit your rating. Please try again.',
         );
         this.isSubmittingRating.set(false);
+      },
+    });
+  }
+
+  resendVerificationEmail(): void {
+    const email = this.authSession.email();
+    if (!email || this.isSendingVerificationEmail()) {
+      if (!email) this.verificationErrorMessage.set('Sign in again to request a verification email.');
+      return;
+    }
+
+    this.isSendingVerificationEmail.set(true);
+    this.verificationMessage.set('');
+    this.verificationErrorMessage.set('');
+    this.apiLinks.authVerifyEmail(email).subscribe({
+      next: () => {
+        this.isSendingVerificationEmail.set(false);
+        this.verificationMessage.set('Verification email sent. Check your inbox and spam folder.');
+      },
+      error: () => {
+        this.isSendingVerificationEmail.set(false);
+        this.verificationErrorMessage.set('Could not send the verification email. Please try again.');
+      },
+    });
+  }
+
+  refreshVerifiedSession(): void {
+    const refreshToken = this.authSession.refreshToken();
+    if (this.isRefreshingVerifiedSession()) return;
+    if (!refreshToken) {
+      this.authSession.clear();
+      this.verificationErrorMessage.set('Your session expired. Sign in again.');
+      return;
+    }
+
+    this.isRefreshingVerifiedSession.set(true);
+    this.verificationErrorMessage.set('');
+    this.apiLinks.authRefresh(refreshToken).subscribe({
+      next: (response) => {
+        if (!this.authSession.updateAccessToken(response.access_token)) {
+          this.isRefreshingVerifiedSession.set(false);
+          this.verificationErrorMessage.set('Could not update your session. Sign in again.');
+          return;
+        }
+
+        this.apiLinks.authGetCurrentUser().subscribe({
+          next: () => {
+            this.isRefreshingVerifiedSession.set(false);
+            this.requiresEmailVerification.set(false);
+            this.verificationMessage.set('Email verified. You can now add products and submit ratings.');
+          },
+          error: (error: unknown) => {
+            this.isRefreshingVerifiedSession.set(false);
+            if (isEmailVerificationRequiredError(error)) {
+              this.verificationErrorMessage.set('Email verification is not complete yet. Check your email and try again.');
+              return;
+            }
+            this.verificationErrorMessage.set('Could not confirm your email status. Please try again.');
+          },
+        });
+      },
+      error: (error: unknown) => {
+        this.isRefreshingVerifiedSession.set(false);
+        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+          this.authSession.clear();
+          this.verificationErrorMessage.set('Your session expired. Sign in again.');
+          return;
+        }
+        this.verificationErrorMessage.set('Could not refresh your session. Please try again.');
       },
     });
   }

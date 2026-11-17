@@ -175,6 +175,35 @@
         </div>
       </article>
 
+      @if (requiresEmailVerification()) {
+        <section class="rating-form" aria-labelledby="email-verification-heading" aria-live="polite">
+          <h2 id="email-verification-heading">Verify your email address</h2>
+          <p>EverREST requires a verified email before you can add products or submit ratings.</p>
+          <button
+            class="submit-rating-button"
+            type="button"
+            [disabled]="isSendingVerificationEmail()"
+            (click)="resendVerificationEmail()"
+          >
+            {{ isSendingVerificationEmail() ? 'Sending…' : 'Resend verification email' }}
+          </button>
+          <button
+            class="add-cart-button"
+            type="button"
+            [disabled]="isRefreshingVerifiedSession()"
+            (click)="refreshVerifiedSession()"
+          >
+            {{ isRefreshingVerifiedSession() ? 'Checking…' : 'I verified my email' }}
+          </button>
+          @if (verificationMessage()) {
+            <p class="action-success" role="status">{{ verificationMessage() }}</p>
+          }
+          @if (verificationErrorMessage()) {
+            <p class="action-error" role="alert">{{ verificationErrorMessage() }}</p>
+          }
+        </section>
+      }
+
       <section class="similar-section" aria-labelledby="similar-heading">
         <h2 id="similar-heading">Similar products</h2>
         @if (isSimilarLoading()) {

@@ -1,1 +1,89 @@
-<p>log-in works!</p>
+<app-navbar></app-navbar>
+
+<main class="registration-layout">
+  <app-benefits></app-benefits>
+
+  <section class="auth-card" aria-labelledby="login-heading">
+    <div class="auth-heading">
+      <h1 id="login-heading">Welcome Back</h1>
+      <p>Sign in to your GameStation account</p>
+    </div>
+
+    <form #loginForm="ngForm" (ngSubmit)="submitLogin()">
+      <div class="email-divider" aria-hidden="true">
+        <span>SIGN IN WITH EMAIL</span>
+      </div>
+
+      <div class="form-grid">
+        <label class="field full-width">
+          <span>Email Address</span>
+          <input
+            type="email"
+            name="email"
+            autocomplete="email"
+            placeholder="Enter your email"
+            [(ngModel)]="email"
+            required
+          >
+        </label>
+
+        <div class="field full-width">
+          <label for="login-password">Password</label>
+          <div class="password-control">
+            <input
+              id="login-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              name="password"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              [(ngModel)]="password"
+              required
+              minlength="8"
+              maxlength="30"
+            >
+            <button
+              class="visibility-toggle"
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <small>Use the password you chose when creating your account.</small>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="auth-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="loginForm.invalid || isSubmitting()"
+      >
+        @if (isSubmitting()) {
+          <span class="loading-indicator" aria-hidden="true"></span>
+          Signing In...
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 17l5-5-5-5M15 12H3"></path>
+            <path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"></path>
+          </svg>
+          Log In
+        }
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Don’t have an account?
+      <a routerLink="/register">Create Account</a>
+    </p>
+  </section>
+</main>
+
+<app-footer></app-footer>

@@ -1,1 +1,190 @@
-<p>cart works!</p>
+<app-navbar></app-navbar>
+
+<main class="cart-page">
+  <header class="cart-heading">
+    <div>
+      <p class="cart-eyebrow">GameStation</p>
+      <h1>Your Shopping Cart</h1>
+      <p>Review your gaming gear and keep shopping for more.</p>
+    </div>
+    <a class="continue-link" routerLink="/categoriesXproducts">Continue Shopping</a>
+  </header>
+
+  @if (isLoading()) {
+    <div class="state-card" role="status">Loading your cart…</div>
+  } @else if (requiresSignIn()) {
+    <section class="state-card sign-in-state" aria-labelledby="cart-sign-in-heading">
+      <h2 id="cart-sign-in-heading">Sign in to view your cart</h2>
+      <p>Your cart is linked to your account. Sign in to see your saved products.</p>
+      <a class="primary-link" routerLink="/log-in">Log In</a>
+    </section>
+  } @else if (requiresEmailVerification()) {
+    <section class="state-card sign-in-state" aria-labelledby="cart-verification-heading">
+      <h2 id="cart-verification-heading">Verify your email address</h2>
+      <p>EverREST requires a verified email before you can use your cart.</p>
+      <button
+        class="secondary-button"
+        type="button"
+        [disabled]="isSendingVerificationEmail()"
+        (click)="resendVerificationEmail()"
+      >
+        {{ isSendingVerificationEmail() ? 'Sending…' : 'Resend verification email' }}
+      </button>
+      <button
+        class="secondary-button"
+        type="button"
+        [disabled]="isRefreshingVerifiedSession()"
+        (click)="refreshVerifiedSession()"
+      >
+        {{ isRefreshingVerifiedSession() ? 'Checking…' : 'I verified my email' }}
+      </button>
+      @if (verificationMessage()) {
+        <p role="status">{{ verificationMessage() }}</p>
+      }
+      @if (verificationErrorMessage()) {
+        <p class="operation-error" role="alert">{{ verificationErrorMessage() }}</p>
+      }
+    </section>
+  } @else if (loadErrorMessage()) {
+    <section class="state-card" role="alert">
+      <p>{{ loadErrorMessage() }}</p>
+      <button class="secondary-button" type="button" (click)="loadCart()">Try Again</button>
+    </section>
+  } @else {
+    @if (operationErrorMessage()) {
+      <p class="operation-error" role="alert">
+        {{ operationErrorMessage() }}
+        @if (operationErrorMessage().includes('Sign in again')) {
+          <a routerLink="/log-in">Log In</a>
+        }
+      </p>
+    }
+
+    @if (items().length > 0) {
+      <div class="cart-layout">
+        <section class="cart-items" aria-labelledby="cart-items-heading">
+          <div class="cart-items-heading">
+            <h2 id="cart-items-heading">Your Items <span>{{ items().length }}</span></h2>
+            <span>Line Total</span>
+          </div>
+
+          @for (item of items(); track item.line.productId) {
+            <article class="cart-item">
+              <a
+                class="product-image"
+                [routerLink]="['/product', item.product._id]"
+                [attr.aria-label]="'View ' + item.product.title"
+              >
+                <img
+                  [src]="item.product.thumbnail"
+                  [alt]="item.product.title"
+                  (error)="onImageError($event)"
+                >
+              </a>
+              <div class="product-info">
+                <p class="product-brand">{{ item.product.brand }}</p>
+                <a class="product-title" [routerLink]="['/product', item.product._id]">
+                  {{ item.product.title }}
+                </a>
+                <p class="product-quantity">Quantity: {{ item.line.quantity }}</p>
+                <button
+                  class="remove-button"
+                  type="button"
+                  [disabled]="isUpdating()"
+                  (click)="removeProduct(item.line.productId)"
+                >
+                  {{ isUpdating() ? 'Updating…' : 'Remove' }}
+                </button>
+              </div>
+              <strong class="line-price">
+                {{ formatPrice(item.line.pricePerQuantity, item.product.price.currency) }}
+              </strong>
+            </article>
+          }
+        </section>
+
+        <aside class="order-summary" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Order Summary</h2>
+          <div class="summary-row">
+            <span>Items ({{ cart()?.total?.quantity ?? 0 }})</span>
+            <span>{{ formatPrice(cart()?.total?.price?.current ?? 0, items()[0].product.price.currency) }}</span>
+          </div>
+          @if ((cart()?.total?.price?.beforeDiscount ?? 0) > (cart()?.total?.price?.current ?? 0)) {
+            <div class="summary-row">
+              <span>Before discounts</span>
+              <span>{{ formatPrice(cart()?.total?.price?.beforeDiscount ?? 0, items()[0].product.price.currency) }}</span>
+            </div>
+          }
+          <div class="summary-total">
+            <span>Subtotal</span>
+            <strong>{{ formatPrice(cart()?.total?.price?.current ?? 0, items()[0].product.price.currency) }}</strong>
+          </div>
+          <p class="shipping-note">Shipping and taxes are calculated at checkout.</p>
+        </aside>
+      </div>
+    } @else {
+      <section class="state-card empty-cart" aria-labelledby="empty-cart-heading">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M8 12h7l6 29h27l7-21H19"></path>
+          <circle cx="26" cy="50" r="3"></circle>
+          <circle cx="45" cy="50" r="3"></circle>
+        </svg>
+        <h2 id="empty-cart-heading">Your cart is waiting for some gear</h2>
+        <p>Explore the catalog and add something you love.</p>
+        <a class="primary-link" routerLink="/categoriesXproducts">Explore Products</a>
+      </section>
+    }
+
+    <section class="recommendations" aria-labelledby="recommendations-heading">
+      <div class="recommendations-heading">
+        <div>
+          <p class="cart-eyebrow">Picked for you</p>
+          <h2 id="recommendations-heading">You may also like</h2>
+        </div>
+        <a class="continue-link" routerLink="/categoriesXproducts">View All Products</a>
+      </div>
+
+      @if (isLoadingRecommendations()) {
+        <p class="recommendation-state" role="status">Finding products for you…</p>
+      } @else if (recommendationErrorMessage()) {
+        <p class="recommendation-state" role="alert">{{ recommendationErrorMessage() }}</p>
+      } @else if (recommendations().length > 0) {
+        <div class="recommendation-grid">
+          @for (product of recommendations(); track product._id) {
+            <article class="recommendation-card">
+              <a
+                class="recommendation-image"
+                [routerLink]="['/product', product._id]"
+                [attr.aria-label]="'View ' + product.title"
+              >
+                <img
+                  [src]="product.thumbnail"
+                  [alt]="product.title"
+                  (error)="onImageError($event)"
+                >
+              </a>
+              <p class="product-brand">{{ product.brand }}</p>
+              <a class="recommendation-title" [routerLink]="['/product', product._id]">
+                {{ product.title }}
+              </a>
+              <div class="recommendation-footer">
+                <strong>{{ formatPrice(product.price.current, product.price.currency) }}</strong>
+                <button
+                  type="button"
+                  [disabled]="isUpdating()"
+                  (click)="addProduct(product)"
+                >
+                  {{ isUpdating() ? 'Adding…' : 'Add to Cart' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="recommendation-state">No more products to recommend right now.</p>
+      }
+    </section>
+  }
+</main>
+
+<app-footer></app-footer>

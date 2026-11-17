@@ -139,6 +139,10 @@
   position: relative;
 }
 
+.cart {
+  text-decoration: none;
+}
+
 .icon-button svg {
   fill: none;
   height: 31px;

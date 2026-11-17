@@ -1,0 +1,204 @@
+<app-navbar></app-navbar>
+
+<main class="registration-layout">
+  <app-benefits></app-benefits>
+
+  <section class="auth-card" aria-labelledby="register-heading">
+    <div class="auth-heading">
+      <h1 id="register-heading">Create Account</h1>
+      <p>Join the gaming community today</p>
+    </div>
+
+    @if (successMessage()) {
+      <div class="auth-success" role="status">
+        <p>{{ successMessage() }}</p>
+        <a routerLink="/log-in">Go to Log In</a>
+      </div>
+    } @else {
+      <form #registrationForm="ngForm" (ngSubmit)="submitRegistration()">
+        <div class="email-divider" aria-hidden="true">
+          <span>REGISTER WITH EMAIL</span>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span>First Name</span>
+            <input
+              type="text"
+              name="firstName"
+              autocomplete="given-name"
+              placeholder="First name"
+              [(ngModel)]="registration.firstName"
+              required
+              minlength="2"
+              maxlength="20"
+            >
+          </label>
+          <label class="field">
+            <span>Last Name</span>
+            <input
+              type="text"
+              name="lastName"
+              autocomplete="family-name"
+              placeholder="Last name"
+              [(ngModel)]="registration.lastName"
+              required
+              minlength="2"
+              maxlength="20"
+            >
+          </label>
+          <label class="field full-width">
+            <span>Email Address</span>
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              placeholder="Enter your email"
+              [(ngModel)]="registration.email"
+              required
+            >
+          </label>
+          <div class="field full-width">
+            <label for="register-password">Password</label>
+            <div class="password-control">
+              <input
+                id="register-password"
+                [type]="showPassword() ? 'text' : 'password'"
+                name="password"
+                autocomplete="new-password"
+                placeholder="Create a strong password"
+                [(ngModel)]="registration.password"
+                required
+                minlength="8"
+                maxlength="30"
+              >
+              <button
+                class="visibility-toggle"
+                type="button"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <small>Use 8–30 characters.</small>
+          </div>
+          <div class="field full-width">
+            <label for="confirm-password">Confirm Password</label>
+            <div class="password-control">
+              <input
+                id="confirm-password"
+                [type]="showConfirmPassword() ? 'text' : 'password'"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="Re-enter your password"
+                [(ngModel)]="confirmPassword"
+                required
+              >
+              <button
+                class="visibility-toggle"
+                type="button"
+                (click)="toggleConfirmPasswordVisibility()"
+                [attr.aria-label]="showConfirmPassword() ? 'Hide confirm password' : 'Show confirm password'"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="details-divider full-width">
+            <span>PROFILE DETAILS</span>
+          </div>
+          <label class="field">
+            <span>Age</span>
+            <input
+              type="number"
+              name="age"
+              autocomplete="off"
+              placeholder="Your age"
+              [(ngModel)]="registration.age"
+              min="1"
+              required
+            >
+          </label>
+          <label class="field">
+            <span>Gender</span>
+            <select name="gender" [(ngModel)]="registration.gender" required>
+              <option value="" disabled>Select gender</option>
+              @for (option of genderOptions; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+          </label>
+          <label class="field full-width">
+            <span>Address</span>
+            <input
+              type="text"
+              name="address"
+              autocomplete="street-address"
+              placeholder="Enter your address"
+              [(ngModel)]="registration.address"
+              required
+            >
+          </label>
+          <label class="field">
+            <span>Phone</span>
+            <input
+              type="tel"
+              name="phone"
+              autocomplete="tel"
+              placeholder="Phone number"
+              [(ngModel)]="registration.phone"
+              required
+            >
+          </label>
+          <label class="field">
+            <span>Zip Code</span>
+            <input
+              type="text"
+              name="zipcode"
+              autocomplete="postal-code"
+              placeholder="Zip code"
+              [(ngModel)]="registration.zipcode"
+              required
+            >
+          </label>
+        </div>
+        <input type="hidden" name="avatar" [(ngModel)]="registration.avatar">
+
+        @if (errorMessage()) {
+          <p class="auth-error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <button
+          class="submit-button"
+          type="submit"
+          [disabled]="registrationForm.invalid || isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="loading-indicator" aria-hidden="true"></span>
+            Creating Account...
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 20v-1.2a5.8 5.8 0 0 1 5.8-5.8h2.4a5.8 5.8 0 0 1 5.8 5.8V20Z"></path>
+            </svg>
+            Create Account
+          }
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a routerLink="/log-in">Sign in</a>
+      </p>
+    }
+  </section>
+</main>
+<app-footer></app-footer>
