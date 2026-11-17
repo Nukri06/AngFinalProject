@@ -1,0 +1,105 @@
+:host {
+  display: block;
+}
+
+.rounded-carousel {
+  color: #fff;
+  padding: 72px clamp(24px, 10.3vw, 132px) 96px;
+  width: 100%;
+}
+
+.rounded-carousel h2 {
+  color: #ff5757;
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 36px;
+  text-align: center;
+}
+
+.image-frame {
+  border-radius: 24px;
+  height: clamp(280px, 35vw, 390px);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
+.arrow {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 19px;
+  height: 48px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+}
+
+.arrow:hover {
+  color: #ff5757;
+}
+
+.previous {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}
+
+.indicators {
+  align-items: center;
+  bottom: 4px;
+  display: flex;
+  gap: 5px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.indicator {
+  appearance: none;
+  background: #ff5757;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 30px;
+  padding: 0;
+  width: 30px;
+}
+
+.indicator.active {
+  background: #9c292d;
+}
+
+@media (max-width: 600px) {
+  .rounded-carousel h2 {
+    margin-bottom: 20px;
+  }
+
+  .image-frame {
+    border-radius: 18px;
+    height: 280px;
+  }
+
+  .indicator {
+    height: 24px;
+    width: 24px;
+  }
+}

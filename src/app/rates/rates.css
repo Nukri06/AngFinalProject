@@ -1,0 +1,127 @@
+:host {
+  display: block;
+}
+
+.reviews-section {
+
+  color: #fff;
+  padding: 0px clamp(24px, 10.3vw, 132px) 96px;
+}
+
+.reviews-section h2 {
+  color: #ff5757;
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.reviews-intro {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 14px 0 40px;
+  text-align: center;
+}
+
+.reviews-grid {
+  display: grid;
+  gap: clamp(24px, 5vw, 76px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.review-card {
+  background: #11102e;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.17);
+  display: flex;
+  flex-direction: column;
+  min-height: 282px;
+  padding: 18px 16px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.review-card:hover {
+  border-color: rgba(255, 87, 87, 0.7);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 12px rgba(255, 87, 87, 0.18);
+  transform: translateY(-6px);
+}
+
+.review-stars {
+  color: #ffc400;
+  display: flex;
+  font-size: 20px;
+  gap: 10px;
+}
+
+.review-stars .fa-regular {
+  color: #c8c8d3;
+}
+
+.review-card blockquote {
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.35;
+  margin: 22px 0 20px;
+}
+
+.review-divider {
+  background: rgba(255, 255, 255, 0.65);
+  height: 1px;
+  width: 92%;
+}
+
+.review-author {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.review-author strong {
+  font-size: 13px;
+}
+
+.review-author span,
+.review-date {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 9px;
+}
+
+.review-date {
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+@media (max-width: 800px) {
+  .reviews-grid {
+    gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .reviews-section {
+    padding-bottom: 64px;
+  }
+
+  .reviews-intro {
+    margin-bottom: 28px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-card {
+    transition: none;
+  }
+
+  .review-card:hover {
+    transform: none;
+  }
+}

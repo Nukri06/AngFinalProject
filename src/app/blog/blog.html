@@ -1,1 +1,16 @@
-<p>blog works!</p>
+<section class="blog-section" aria-labelledby="blog-heading">
+  <h2 id="blog-heading">Our Blog</h2>
+
+  <div class="blog-grid">
+    @for (article of articles; track article.title) {
+      <article class="blog-card">
+        <img class="blog-background" [src]="article.image" alt="" aria-hidden="true">
+        <h3>{{ article.title }}</h3>
+        <div class="watch-cta" aria-hidden="true">
+          <span>Watch</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+      </article>
+    }
+  </div>
+</section>

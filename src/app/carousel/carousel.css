@@ -1,0 +1,141 @@
+.carousel {
+  background-color: #080525;
+  color: #fff;
+  isolation: isolate;
+  min-height: 548px;
+  overflow: hidden;
+  padding: 72px clamp(24px, 10.3vw, 132px) 96px;
+  position: relative;
+}
+
+.carousel-background {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+.carousel::before {
+  background: linear-gradient(90deg, rgba(8, 5, 37, 0.96) 0%, rgba(8, 5, 37, 0.76) 42%, rgba(8, 5, 37, 0.12) 100%);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.carousel-content {
+  max-width: 100dvw;
+  position: relative;
+  z-index: 2;
+}
+
+.carousel h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.product-category {
+  color: #c51edb;
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+.product-description {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 18px;
+  line-height: 1.4;
+  margin-top: 22px;
+  max-width: 550px;
+}
+
+.shop-button {
+  align-items: center;
+  background: #c51edb;
+  border-radius: 11px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 700;
+  gap: 8px;
+  margin-top: 38px;
+  padding: 13px 15px;
+  cursor: pointer;
+}
+.shop-button:hover{
+  background-color: #a21fb3;
+  transition: 0.2s;
+}
+
+.carousel-controls {
+  align-items: center;
+  bottom: 28px;
+  display: flex;
+  gap: 9px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.arrow-control {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  width: 34px;
+}
+
+.slide-indicators {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.slide-indicators button {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.35);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  height: 8px;
+  padding: 0;
+  width: 8px;
+}
+
+.slide-indicators .active-indicator {
+  background: #c51edb;
+  width: 30px;
+}
+
+@media (max-width: 600px) {
+  .carousel {
+    min-height: 500px;
+    padding: 56px 24px 92px;
+  }
+
+  .product-category {
+    font-size: 16px;
+    margin-top: 30px;
+  }
+
+  .product-description {
+    font-size: 16px;
+    margin-top: 18px;
+  }
+
+  .shop-button {
+    margin-top: 28px;
+  }
+}

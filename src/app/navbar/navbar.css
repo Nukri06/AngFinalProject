@@ -1,0 +1,292 @@
+:host {
+  display: block;
+}
+
+.navbar {
+  align-items: center;
+  background: #030b28;
+  color: #fff;
+  display: flex;
+  gap: 30px;
+  min-height: 72px;
+  padding:0 64px;
+  width: 100%;
+}
+
+.brand,
+.help,
+.icon-button,
+.account {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+}
+
+.brand {
+  flex: 1 1 30%;
+  gap: 10px;
+  justify-content: flex-start;
+  min-width: 190px;
+  text-align: left;
+}
+
+.brand img {
+  height: 42px;
+  object-fit: contain;
+  width: 42px;
+}
+
+.brand span {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.primary-nav {
+  align-items: center;
+  display: flex;
+  flex: 0 1 31%;
+  gap: clamp(32px, 5vw, 64px);
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.categories,
+.search,
+.actions {
+  font-size: 16px;
+  cursor: pointer;
+}
+.categories:hover,
+.search:hover,
+.help:hover,
+.cart:hover,
+.brand:hover{
+  color: var(--color-indigo-3) ;
+  transition: 0.3s;
+}
+
+.search {
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 6px;
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  min-width: 0;
+  padding: 8px 12px;
+  cursor: text;
+}
+
+.search input {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  flex: 1;
+  font: inherit;
+  min-width: 0;
+  outline: none;
+}
+
+.search input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
+}
+
+.search:focus-within {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex: 1 1 39%;
+  gap: 18px;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+.help {
+  font-weight: 700;
+  gap: 8px;
+}
+
+.help-avatar {
+  align-items: center;
+  background: #bd302b;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 15px;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.icon-button {
+  gap: 6px;
+  position: relative;
+}
+
+.icon-button svg {
+  fill: none;
+  height: 31px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+  width: 31px;
+}
+
+.cart-count {
+  align-items: center;
+  background: #d11be4;
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 10px;
+  height: 14px;
+  justify-content: center;
+  margin-left: -10px;
+  margin-top: -19px;
+  width: 14px;
+}
+
+.favorite svg {
+  height: 32px;
+  width: 32px;
+}
+
+.auth-links {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.auth-links a {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 5px;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 13px;
+  text-decoration: none;
+}
+
+.auth-links .sign-up {
+  background: #fff;
+  color: #030b28;
+}
+
+.auth-links a:hover {
+  opacity: 0.82;
+}
+
+.account {
+  font-weight: 700;
+  gap: 8px;
+}
+
+.account-icon {
+  align-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 14px;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    gap: 18px;
+    padding-right: 14px;
+  }
+
+  .brand {
+    flex-basis: auto;
+    min-width: auto;
+  }
+
+  .primary-nav {
+    flex: 1 1 auto;
+    gap: 24px;
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 680px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    padding: 10px 14px;
+  }
+
+  .brand {
+    flex: 1 0 40%;
+  }
+
+  .primary-nav {
+    flex: 1 1 45%;
+    justify-content: flex-end;
+  }
+
+  .actions {
+    flex: 1 0 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar {
+    gap: 12px;
+  }
+
+  .brand img {
+    height: 34px;
+    width: 34px;
+  }
+
+  .brand span,
+  .categories,
+  .search,
+  .actions {
+    font-size: 14px;
+  }
+
+  .primary-nav {
+    gap: 14px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .help-avatar {
+    height: 28px;
+    width: 28px;
+  }
+
+  .icon-button svg,
+  .favorite svg {
+    height: 27px;
+    width: 27px;
+  }
+
+  .auth-links {
+    gap: 6px;
+  }
+
+  .auth-links a {
+    font-size: 12px;
+    padding: 8px 9px;
+  }
+}

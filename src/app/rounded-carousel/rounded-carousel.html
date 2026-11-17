@@ -1,0 +1,27 @@
+<section class="rounded-carousel" aria-label="Holiday sales">
+  <h2>Holiday sales</h2>
+
+  <div class="image-frame">
+    <img class="carousel-image" [src]="currentImage" alt="Holiday sale product">
+
+    <button class="arrow previous" type="button" aria-label="Previous image" (click)="previousImage()">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <button class="arrow next" type="button" aria-label="Next image" (click)="nextImage()">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+
+    <div class="indicators" aria-label="Choose an image">
+      @for (image of imageList; track image; let index = $index) {
+        <button
+          class="indicator"
+          [class.active]="index === currentIndex"
+          [attr.aria-label]="'Show image ' + (index + 1)"
+          [attr.aria-current]="index === currentIndex ? 'true' : null"
+          type="button"
+          (click)="goToImage(index)"
+        ></button>
+      }
+    </div>
+  </div>
+</section>

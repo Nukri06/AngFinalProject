@@ -1,1 +1,37 @@
-<p>main-products works!</p>
+<section class="products-frame" [attr.aria-label]="sectionTitle()">
+  <h2 id="products-heading">{{ sectionTitle() }}</h2>
+
+  @if (isLoading()) {
+    <p class="status-message" role="status">Product is loading...</p>
+  } @else if (errorMessage()) {
+    <p class="status-message error" role="alert">{{ errorMessage() }}</p>
+  } @else if (products().length === 0) {
+    <p class="status-message">Product is out of stock.</p>
+  } @else {
+    <div class="product-carousel" role="region" aria-label="Products, scroll horizontally" tabindex="0">
+      @for (product of products(); track product._id) {
+        <article class="product-card">
+          <div class="product-image">
+            <img [src]="product.thumbnail" [alt]="product.title" loading="lazy">
+          </div>
+          <div class="product-info">
+            <h3>{{ product.title }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-price">
+              {{ product.price.current }} {{ product.price.currency }}
+            </p>
+            <div class="product-actions">
+              <button class="compare-button" type="button" aria-label="Compare product" disabled>
+                <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i>
+              </button>
+              <button class="add-to-cart" type="button" disabled>
+                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

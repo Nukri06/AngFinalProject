@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  padding: 24px clamp(24px, 10.3vw, 132px) 96px;
+}
+
+.ad-banner {
+  aspect-ratio: 2.4 / 1;
+  border-radius: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  isolation: isolate;
+  min-height: 340px;
+  overflow: hidden;
+  padding: 26px 28px 68px;
+  position: relative;
+  width: 100%;
+}
+
+.ad-background {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+.ad-banner::before {
+  background: linear-gradient(90deg, rgba(18, 5, 48, 0.88) 0%, rgba(18, 5, 48, 0.5) 38%, rgba(18, 5, 48, 0.05) 76%);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.ad-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.ad-status {
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ad-date {
+  font-size: 16px;
+  margin-top: 52px;
+}
+
+
+.ad-cta {
+  align-items: center;
+  cursor: pointer;
+  background: linear-gradient(100deg,#5068d8 , #060d2b);
+  border-radius: 12px;
+  bottom: 28px;
+  display: flex;
+  font-size: 22px;
+  font-weight: 700;
+  gap: 18px;
+  justify-content: center;
+  left: 28px;
+  min-height: 38px;
+  position: absolute;
+  right: 28px;
+  
+  z-index: 2;
+}
+
+.ad-cta:hover {
+  background: linear-gradient(100deg, #000000, #5068d8);
+  transition:  0.5s ease;
+}
+.ad-cta i {
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .ad-banner {
+    aspect-ratio: auto;
+    border-radius: 26px;
+    min-height: 340px;
+    padding: 24px 20px 76px;
+  }
+
+  .ad-date {
+    margin-top: 38px;
+  }
+
+  .ad-title {
+    margin-left: 8px;
+  }
+
+  .ad-title-sub {
+    letter-spacing: 5px;
+    margin-left: 24px;
+  }
+
+  .ad-cta {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}

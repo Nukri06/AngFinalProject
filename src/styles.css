@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+:root {
+  --font-body: "Montserrat", sans-serif;
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+
+  /* --- Monochromatic Colors --- */
+  --color-black: #000000;         /* Black */
+  --color-sdark-grey: #2d2d2d;    /*[cite: 1] SDarkGrey */
+  --color-dark-grey: #666666;     /*[cite: 1] DarkGrey */
+  --color-light-grey: #e0e0e0;    /*[cite: 1] LightGrey */
+  --color-white: #ffffff;         /*[cite: 1] White */
+
+  /* --- Primary Colors --- */
+  --color-flare-1: #7a2222;       /*[cite: 1] Flare1 */
+  --color-flare-2: #b22222;       /*[cite: 1] Flare2 */
+  --color-flare-3: #d9534f;       /*[cite: 1] Flare3 */
+  --color-flare-4: #ff5733;       /*[cite: 1] Flare4 */
+
+  /* --- Status Colors --- */
+  --color-failed: #d32f2f;        /*[cite: 1] Failed */
+  --color-success: #81c784;       /*[cite: 1] Success */
+  --color-process: #ffa000;       /*[cite: 1] Process */
+
+  /* --- Secondary Colors --- */
+  --color-indigo-1: #283593;      /*[cite: 1] Indigo1 */
+  --color-indigo-2: #3f51b5;      /*[cite: 1] Indigo2 */
+  --color-indigo-3: #5c6bc0;      /*[cite: 1] Indigo3 */
+  --color-indigo-4: #7986cb;      /*[cite: 1] Indigo4 */
+  --color-indigo-5: #1a237e;      /*[cite: 1] Indigo5 */
+  --color-indigo-6: #0d1b2a;      /*[cite: 1] Indigo6 */
+
+  /* --- Standard Paddings (სტანდარტული ფედინგები) --- */
+  --padding-xs: 4px;
+  --padding-sm: 8px;
+  --padding-md: 16px;
+  --padding-lg: 24px;
+  --padding-xl: 32px;
+  --padding-xxl: 48px;
+}
+

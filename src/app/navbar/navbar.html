@@ -1,1 +1,37 @@
-<p>navbar works!</p>
+<header class="navbar">
+  <button class="brand" type="button" aria-label="Refresh page" (click)="refreshPage()">
+    <img src="/assets/GStation Logo.png" alt="">
+    <span>GameStation</span>
+  </button>
+
+  <nav class="primary-nav" aria-label="Main navigation">
+    <span class="categories">Categories</span>
+    <label class="search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" placeholder="search the product here" aria-label="Search products">
+    </label>
+  </nav>
+
+  <div class="actions">
+    <button class="help" type="button">
+      <span class="help-avatar" aria-hidden="true"><i class="fa-solid fa-headset"></i></span>
+      <span>Help</span>
+    </button>
+    <button class="icon-button cart" type="button" aria-label="Cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span class="cartTxt">Cart</span>
+      <span class="cart-count">0</span>
+    </button>
+    @if (isLoggedIn) {
+      <button class="account" type="button">
+        <span class="account-icon" aria-hidden="true">P</span>
+        <span>{{ userName }}</span>
+      </button>
+    } @else {
+      <div class="auth-links">
+        <a routerLink="/log-in">Log In</a>
+        <a class="sign-up" routerLink="/register">Sign Up</a>
+      </div>
+    }
+  </div>
+</header>

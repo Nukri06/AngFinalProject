@@ -1,1 +1,28 @@
-<p>rates works!</p>
+<section class="reviews-section" aria-labelledby="reviews-heading">
+  <h2 id="reviews-heading">What Gamers Say</h2>
+  <p class="reviews-intro">Join thousands of satisfied customers who trust Gamestation for their gaming needs</p>
+
+  <div class="reviews-grid">
+    @for (review of reviews; track review.name) {
+      <article class="review-card">
+        <div class="review-stars" [attr.aria-label]="review.rating + ' out of 5 stars'">
+          @for (star of stars; track star) {
+            <i
+              [class.fa-solid]="star <= review.rating"
+              [class.fa-regular]="star > review.rating"
+              class="fa-star"
+              aria-hidden="true"
+            ></i>
+          }
+        </div>
+        <blockquote>{{ review.quote }}</blockquote>
+        <div class="review-divider"></div>
+        <div class="review-author">
+          <strong>{{ review.name }}</strong>
+          <span>{{ review.role }}</span>
+        </div>
+        <p class="review-date">Date: {{ review.date }}</p>
+      </article>
+    }
+  </div>
+</section>
