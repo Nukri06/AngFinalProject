@@ -212,25 +212,50 @@
   width: 26px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .navbar {
-    gap: 18px;
-    padding-right: 14px;
+    gap: 16px;
+    padding: 0 24px;
   }
 
   .brand {
-    flex-basis: auto;
-    min-width: auto;
+    flex: 0 1 auto;
+    min-width: 0;
   }
 
   .primary-nav {
     flex: 1 1 auto;
-    gap: 24px;
+    gap: clamp(14px, 2vw, 22px);
   }
 
   .actions {
     flex: 0 1 auto;
     gap: 12px;
+  }
+}
+
+@media (max-width: 960px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 10px 18px;
+  }
+
+  .brand {
+    flex: 1 1 auto;
+    min-width: auto;
+  }
+
+  .primary-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 18px;
+  }
+
+  .actions {
+    flex: 1 0 100%;
+    gap: 12px;
+    justify-content: space-between;
   }
 }
 
@@ -275,6 +300,7 @@
 
   .primary-nav {
     gap: 14px;
+    min-width: 0;
   }
 
   .actions {

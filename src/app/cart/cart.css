@@ -64,5 +64,5 @@
   .recommendation-card { padding: 9px; }
   .recommendation-image { height: 110px; }
   .recommendation-footer { align-items: flex-start; flex-direction: column; }
-  .recommendations-heading { align-items: flex-start; }
+  .recommendations-heading { align-items: flex-start; flex-direction: column; }
 }

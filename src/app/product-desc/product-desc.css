@@ -52,6 +52,6 @@
 .similar-card:hover, .add-cart-button:not(:disabled):hover, .submit-rating-button:not(:disabled):hover, .rating-options button:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0, 0, 0, .2); }
 .similar-card:hover .similar-image img { transform: scale(1.03); }
 .back-link:hover { color: #fff; }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .detail-card, .purchase-panel { grid-template-columns: minmax(0, 1fr); }
 }
